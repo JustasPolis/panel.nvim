@@ -24,12 +24,15 @@ end
 ---@param position integer?
 ---@return nil
 function M.add(tab, position)
-  table.insert(lazy.config.opts.tabs, position or 0, tab)
-  assert(split, "split should not be nil")
-  assert(active_tab, "active_tab should not be nil")
-  assert(lazy.config.opts.tabs, "config.opts.tabs should not be nil")
-  assert(lazy.config.opts.tabs > 0, "config.opts.tabs should be higher than 0")
-  lazy.winbar.render(split.winid, lazy.config.opts.tabs, active_tab)
+  table.insert(lazy.config.opts.tabs, 3, tab)
+
+  -- rerender winbar if split is active
+  if split ~= nil and vim.api.nvim_win_is_valid(split.winid) then
+    assert(active_tab, "active_tab should not be nil")
+    assert(lazy.config.opts.tabs, "config.opts.tabs should not be nil")
+    assert(#lazy.config.opts.tabs > 0, "config.opts.tabs should be higher than 0")
+    lazy.winbar.render(split.winid, lazy.config.opts.tabs, active_tab)
+  end
 end
 
 ---@param tab Tab
@@ -74,14 +77,14 @@ function M.navigate(tab)
         local ok, module = pcall(require, "panel." .. value.module)
         if ok then
           active_tab = { name = value.name, module = module }
+        else
+          error("tab module not found")
         end
+      elseif type(value.module) == "table" then
+        active_tab = { name = value.name, module = value.module }
       else
-        error("tab module not found")
+        error("tab module should be either string or table")
       end
-    elseif type(value.module) == "table" then
-      active_tab = { name = value.name, module = value.module }
-    else
-      error("tab module should be either string or table")
     end
   end
 

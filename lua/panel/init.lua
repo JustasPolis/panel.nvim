@@ -14,21 +14,10 @@ local M = {}
 ---@return nil
 function M.setup(opts)
   opts = opts or {}
-  local function load()
-    lazy.config:setup(opts)
-    lazy.manager.setup()
-    lazy.commands.setup()
-    plugin_loaded = true
-  end
-
-  if vim.v.vim_did_enter == 0 then
-    vim.api.nvim_create_autocmd("VimEnter", {
-      once = true,
-      callback = load,
-    })
-  else
-    vim.schedule(load)
-  end
+  lazy.config:setup(opts)
+  lazy.manager.setup()
+  lazy.commands.setup()
+  plugin_loaded = true
 end
 
 ---@param tab string
@@ -41,12 +30,14 @@ end
 ---@param tab Tab
 ---@return nil
 function M.add(tab)
+  assert(plugin_loaded, "Please call setup() first before adding new tabs")
   lazy.manager.add(tab)
 end
 
 ---@param tab Tab
 ---@return nil
 function M.remove(tab)
+  assert(plugin_loaded, "Please call setup() first before removing tabs")
   lazy.manager.remove(tab)
 end
 

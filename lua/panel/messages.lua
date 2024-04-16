@@ -1,6 +1,6 @@
 local Line = require("nui.line")
 local Text = require("nui.text")
-local Utils = require("bottom-panel.utils")
+local Utils = require("panel.utils")
 
 local time_text_hl = "BottomPanelTimeText"
 local error_text_hl = "BottomPanelErrorText"
@@ -236,12 +236,13 @@ function M.on_enter(winid)
 end
 
 ---@return nil
-function M.on_leave(winid)
+function M.on_leave(_)
   vim.api.nvim_del_augroup_by_name("panel_messages_win_enter")
   vim.wo[state.winid].winfixbuf = false
   Utils.set_win_option(state.winid, "relativenumber", true)
   Utils.set_win_option(state.winid, "number", true)
   Utils.set_win_option(state.winid, "signcolumn", "yes")
+  state.winid = nil
 end
 
 vim.api.nvim_create_autocmd("LspProgress", {
