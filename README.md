@@ -1,1 +1,1 @@
-# panel-new.nvim
+# panel.nvim
