@@ -15,7 +15,7 @@ local M = {}
 ---@param active_tab Tab
 function M.render(win_id, tabs, active_tab)
   local whitespace = " "
-  local winbar = "%#" .. padding_hl .. "#" .. whitespace
+  local winbar = ""
   for _, tab in ipairs(tabs) do
     if active_tab.name == tab.name then
       winbar = winbar .. "%#" .. active_tab_text_hl .. "#" .. tab.name .. whitespace

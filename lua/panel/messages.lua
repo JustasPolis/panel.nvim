@@ -45,7 +45,7 @@ local function append(message)
     if vim.api.nvim_buf_is_valid(state.bufnr) and vim.api.nvim_win_is_valid(state.winid) then
       local line = Line()
 
-      line:append(Text(" " .. message.date .. " ", time_text_hl))
+      line:append(Text(message.date .. " ", time_text_hl))
 
       if message.level == vim.log.levels.ERROR then
         line:append(Text(message.text, error_text_hl))
@@ -170,7 +170,7 @@ local function render()
           if vim.api.nvim_buf_is_valid(state.bufnr) and vim.api.nvim_win_is_valid(state.winid) then
             local line = Line()
 
-            line:append(Text(" " .. message.date .. " ", time_text_hl))
+            line:append(Text(message.date .. " ", time_text_hl))
 
             if message.level == vim.log.levels.ERROR then
               line:append(Text(message.text, error_text_hl))

@@ -108,12 +108,12 @@ local function render(diagnostics, winid)
       if index == 1 then
         local sign = get_sign(item.severity)
         if sign ~= nil and sign[1] ~= nil then
-          text_line:append(Text((" " .. sign[1].text .. " "), sign[1].texthl))
+          text_line:append(Text((sign[1].text .. " "), sign[1].texthl))
         end
         text_line:append(Text(message .. " ", diagnostic_text_hl))
         text_line:append(Text(item.filename, diagnostic_filename_hl))
       else
-        text_line:append(Text("    " .. message, diagnostic_text_hl))
+        text_line:append(Text("  " .. message, diagnostic_text_hl))
       end
       table.insert(buffer.content, text_line:content())
       table.insert(buffer.lines, { diagnostics = item, text = text_line })
