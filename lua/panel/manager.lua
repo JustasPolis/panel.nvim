@@ -4,7 +4,11 @@ local M = {}
 ---@field winid integer
 ---@field mount fun(): nil
 
----@type Tab?
+---@class ActiveTab
+---@field name string
+---@field module table
+
+---@type ActiveTab?
 local active_tab = nil
 
 ---@type View?
@@ -69,11 +73,13 @@ function M.navigate(tab)
       if type(value.module) == "string" then
         local ok, module = pcall(require, "panel." .. value.module)
         if ok then
-          active_tab = module
+          active_tab = { name = value.name, module = module }
         end
+      else
+        error("tab module not found")
       end
     elseif type(value.module) == "table" then
-      active_tab = value.module
+      active_tab = { name = value.name, module = value.module }
     else
       error("tab module should be either string or table")
     end
@@ -98,8 +104,8 @@ function M.navigate(tab)
   end
 
   -- finally render active_tab
-  active_tab.on_enter(split.winid)
-  lazy.winbar.setup(split.winid, lazy.config.opts.tabs, active_tab)
+  active_tab.module.on_enter(split.winid)
+  lazy.winbar.render(split.winid, lazy.config.opts.tabs, active_tab)
 end
 
 return M

@@ -15,8 +15,9 @@ local M = {}
 function M.setup(opts)
   opts = opts or {}
   local function load()
-    lazy.config.setup(opts)
+    lazy.config:setup(opts)
     lazy.manager.setup()
+    lazy.commands.setup()
     plugin_loaded = true
   end
 
