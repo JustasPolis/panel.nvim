@@ -113,7 +113,7 @@ local function render(diagnostics, winid)
         text_line:append(Text(message .. " ", diagnostic_text_hl))
         text_line:append(Text(item.filename, diagnostic_filename_hl))
       else
-        text_line:append(Text("  " .. message, diagnostic_text_hl))
+        text_line:append(Text("   " .. message, diagnostic_text_hl))
       end
       table.insert(buffer.content, text_line:content())
       table.insert(buffer.lines, { diagnostics = item, text = text_line })
