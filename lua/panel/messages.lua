@@ -162,42 +162,6 @@ local function render()
       and vim.api.nvim_win_is_valid(state.winid)
       and #messages > 0
     then
-      vim.bo[state.bufnr].modifiable = true
-      -- clean up the buffer
-      vim.api.nvim_buf_set_lines(state.bufnr, 0, -1, false, {})
-      for _, message in ipairs(messages) do
-        if state.bufnr ~= nil and state.winid ~= nil then
-          if vim.api.nvim_buf_is_valid(state.bufnr) and vim.api.nvim_win_is_valid(state.winid) then
-            local line = Line()
-
-            line:append(Text(message.date .. " ", time_text_hl))
-
-            if message.level == vim.log.levels.ERROR then
-              line:append(Text(message.text, error_text_hl))
-            elseif message.level == vim.log.levels.INFO then
-              line:append(Text(message.text, info_text_hl))
-            elseif message.level == vim.log.levels.TRACE then
-              line:append(Text(message.text, trace_text_hl))
-            elseif message.level == vim.log.levels.DEBUG then
-              line:append(Text(message.text, debug_text_hl))
-            elseif message.level == vim.log.levels.WARN then
-              line:append(Text(message.text, warn_text_hl))
-            elseif message.level == vim.log.levels.OFF then
-              line:append(Text(message.text, off_text_hl))
-            else
-              line:append(Text(message.text, info_text_hl))
-            end
-            vim.api.nvim_buf_set_lines(
-              state.bufnr,
-              Utils.buffer_empty(state.bufnr) and 0 or vim.api.nvim_buf_line_count(state.bufnr),
-              Utils.buffer_empty(state.bufnr) and -1 or vim.api.nvim_buf_line_count(state.bufnr) + 1,
-              false,
-              { line:content() }
-            )
-            line:highlight(state.bufnr, -1, vim.api.nvim_buf_line_count(state.bufnr))
-          end
-        end
-      end
       vim.wo[state.winid].winfixbuf = true
       vim.bo[state.bufnr].modifiable = false
       vim.api.nvim_win_set_cursor(state.winid, { vim.api.nvim_buf_line_count(state.bufnr), 0 })
