@@ -213,7 +213,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
   group = Utils.create_augroup("panel_messages"),
   callback = function(event)
     local client_id = event.data.client_id
-    local value = event.data.result.value
+    local value = event.data.params.value
     local client = vim.lsp.get_client_by_id(client_id).name or " "
     local title = value.title or ""
     local message = value.message or ""
